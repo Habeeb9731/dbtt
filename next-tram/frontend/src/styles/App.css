@@ -2479,7 +2479,7 @@ body {
   text-align: center;
 }
 .tcard-time {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #fff;
   line-height: 1;
@@ -2491,7 +2491,7 @@ body {
   gap: 6px;
 }
 .tcard-seconds {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #fff;
   font-variant-numeric: tabular-nums;
