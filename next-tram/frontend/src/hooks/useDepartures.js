@@ -22,7 +22,7 @@ export function useDepartures(stopId, destId, autoRefresh = true) {
     setError(null)
 
     try {
-      const params = new URLSearchParams({ stopId, results: 10 })
+      const params = new URLSearchParams({ stopId, results: 15 })
       if (destId) params.set('destId', destId)
 
       const res = await window.fetch(`/api/departures?${params}`, {
