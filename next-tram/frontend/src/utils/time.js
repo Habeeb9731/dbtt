@@ -27,6 +27,17 @@ export function toHHMM(value, tz = 'Europe/Berlin') {
   return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', timeZone: tz })
 }
 
+// Converts "HH:MM" (24hr) string to "h:MM AM/PM"
+export function to12hr(time) {
+  if (!time) return '–'
+  const [hStr, mStr] = time.split(':')
+  let h = parseInt(hStr, 10)
+  const m = mStr || '00'
+  const ampm = h >= 12 ? 'PM' : 'AM'
+  h = h % 12 || 12
+  return `${h}:${m} ${ampm}`
+}
+
 // Returns delay badge label: "+2 min", "On time", or "" if unknown
 export function delayLabel(delayMinutes, cancelled) {
   if (cancelled) return 'Cancelled'

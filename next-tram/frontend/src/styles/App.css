@@ -2153,6 +2153,7 @@ body {
 .ntc2-card {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr 18px;
   min-height: 220px;
   border-radius: var(--r-lg);
   border: 1px solid rgba(255 255 255 / 0.08);
@@ -2163,6 +2164,57 @@ body {
   overflow: hidden;
   margin-bottom: var(--gap-md);
 }
+
+.ntc2-progress-track {
+  grid-column: 1 / -1;
+  background: rgba(255 255 255 / 0.06);
+  height: 18px;
+  position: relative;
+}
+
+.ntc2-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ea580c, #f97316 40%, #facc15 75%, #fef08a);
+  border-radius: 0 6px 6px 0;
+  transition: width 1s linear;
+  box-shadow: 0 0 16px rgba(251 146 60 / 0.7), 0 0 40px rgba(251 146 60 / 0.3);
+  position: relative;
+}
+
+.ntc2-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: rgba(255 255 255 / 0.2);
+  border-radius: 0 6px 0 0;
+}
+
+.ntc2-progress-tram {
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1) sepia(1) saturate(1.5) hue-rotate(8deg) brightness(0.85);
+}
+
+.ntc2-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.tt2-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.ntc2-deptime-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ntc2-deptime-original { font-size: 1.3rem; font-weight: 600; color: rgba(255 255 255 / 0.35); text-decoration: line-through; font-variant-numeric: tabular-nums; }
 
 .ntc2-left {
   padding: var(--gap-lg) var(--gap-lg);
@@ -2380,8 +2432,8 @@ body {
 
 /* ── Times only bigger, relative stays normal ──────────── */
 .tt2-relative  { font-size: 0.9rem !important; font-weight: 500 !important; color: rgba(180 200 255 / 0.6) !important; }
-.tt2-time-val  { font-size: 1.5rem !important; font-weight: 700 !important; }
-.tt2-time-actual { font-size: 1.5rem !important; font-weight: 700 !important; }
+.tt2-time-val  { font-size: 2.2rem !important; font-weight: 700 !important; }
+.tt2-time-actual { font-size: 2.2rem !important; font-weight: 700 !important; }
 
 /* ── Next tram card: big departure time ─────────────────── */
 .ntc2-deptime { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
@@ -2478,6 +2530,12 @@ body {
   justify-content: center;
   text-align: center;
 }
+.tcard-ampm {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: rgba(255 255 255 / 0.5);
+  vertical-align: super;
+}
 .tcard-time {
   font-size: 3rem;
   font-weight: 700;
@@ -2545,4 +2603,4 @@ body {
 /* ── Split relative: big number, small labels ──────────── */
 .tt2-relative-wrap { display: inline-flex; align-items: baseline; gap: 3px; white-space: nowrap; }
 .tt2-rel-label { font-size: 0.78rem !important; font-weight: 400 !important; color: rgba(180 200 255 / 0.55) !important; }
-.tt2-rel-num   { font-size: 1.6rem !important; font-weight: 700 !important; color: var(--text-primary) !important; font-variant-numeric: tabular-nums; line-height: 1; }
+.tt2-rel-num   { font-size: 2.4rem !important; font-weight: 700 !important; color: var(--text-primary) !important; font-variant-numeric: tabular-nums; line-height: 1; }
