@@ -224,9 +224,20 @@ function TimetableRow({ departure, index, active, onToggle }) {
 }
 
 export default function DeparturesList({ departures }) {
+  // Compute next/rest BEFORE hooks to avoid temporal dead zone
+  const now = new Date()
+  const sorted = departures?.length
+    ? [...departures].sort((a, b) => new Date(a.departureISO) - new Date(b.departureISO))
+    : []
+  const future = sorted.filter(d => new Date(d.departureISO) >= now)
+  const nextIdx = future.findIndex(d => !d.cancelled)
+  const next = nextIdx >= 0 ? future[nextIdx] : future[0]
+  const rest = future.filter((_, i) => i !== (nextIdx >= 0 ? nextIdx : 0))
+
   const [activeAlerts, setActiveAlerts] = useState({})
   const [nextAlert, setNextAlert] = useState(false)
   const restRef = useRef([])
+  restRef.current = rest
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -255,17 +266,7 @@ export default function DeparturesList({ departures }) {
   }, [next?.tripId])
 
   if (!departures?.length) return <div className="empty-state"><p>No departures found.</p></div>
-
-  const now = new Date()
-  const sorted = [...departures].sort((a, b) => new Date(a.departureISO) - new Date(b.departureISO))
-  const future = sorted.filter(d => new Date(d.departureISO) >= now)
-  const nextIdx = future.findIndex(d => !d.cancelled)
-  const next = nextIdx >= 0 ? future[nextIdx] : future[0]
-  const rest = future.filter((_, i) => i !== (nextIdx >= 0 ? nextIdx : 0))
-
   if (!next) return <div className="empty-state"><p>No upcoming departures.</p></div>
-
-  restRef.current = rest
 
   return (
     <>
