@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 
 let audioCtx = null
 const audioBuffers = {}
+const globalNotifiedTrips = new Set() // tracks tripIds that already had sound played
 
 async function loadSound(file = 'notify.wav') {
   if (audioBuffers[file]) return audioBuffers[file]
@@ -43,7 +44,8 @@ function BellButton({ departureISO, active, onToggle, cancelled }) {
       return
     }
     // 3 minutes remaining
-    if (minutes !== null && minutes <= 3 && minutes >= 0 && !notifiedRef.current) {
+    if (minutes !== null && minutes <= 3 && minutes >= 0 && !globalNotifiedTrips.has(departureISO)) {
+      globalNotifiedTrips.add(departureISO)
       notifiedRef.current = true
       setRinging(true)
       playSound('notify.wav')
@@ -77,18 +79,18 @@ function NextTramCard({ departure, notifyActive, onToggleNotify }) {
   const { countdown } = useCountdown(departure.departureISO)
   const minutes = countdown ? parseInt(countdown.split(':')[0], 10) : 0
   const seconds = countdown ? parseInt(countdown.split(':')[1], 10) : 0
-  const notifiedRef = useRef(false)
   const cancelNotifiedRef = useRef(false)
 
   useEffect(() => {
-    if (!notifyActive) { notifiedRef.current = false; cancelNotifiedRef.current = false; return }
+    if (!notifyActive) { cancelNotifiedRef.current = false; return }
     if (departure?.cancelled && !cancelNotifiedRef.current) {
       cancelNotifiedRef.current = true
       playSound('cancelled.wav')
       return
     }
-    if (minutes <= 3 && minutes >= 0 && countdown && !notifiedRef.current) {
-      notifiedRef.current = true
+    const tripId = departure?.tripId
+    if (minutes <= 3 && minutes >= 0 && countdown && !globalNotifiedTrips.has(tripId)) {
+      globalNotifiedTrips.add(tripId)
       playSound('notify.wav')
     }
   }, [notifyActive, minutes, departure?.cancelled, countdown])
@@ -224,7 +226,6 @@ function TimetableRow({ departure, index, active, onToggle }) {
 export default function DeparturesList({ departures }) {
   const [activeAlerts, setActiveAlerts] = useState({})
   const [nextAlert, setNextAlert] = useState(false)
-
   const restRef = useRef([])
 
   useEffect(() => {
@@ -244,6 +245,15 @@ export default function DeparturesList({ departures }) {
     return () => window.removeEventListener('keydown', handleKey)
   }, [])
 
+  // Transfer alert when tram advances to main card
+  useEffect(() => {
+    if (!next?.tripId) return
+    if (activeAlerts[next.tripId]) {
+      setNextAlert(true)
+      setActiveAlerts(prev => { const n = {...prev}; delete n[next.tripId]; return n })
+    }
+  }, [next?.tripId])
+
   if (!departures?.length) return <div className="empty-state"><p>No departures found.</p></div>
 
   const now = new Date()
@@ -256,12 +266,6 @@ export default function DeparturesList({ departures }) {
   if (!next) return <div className="empty-state"><p>No upcoming departures.</p></div>
 
   restRef.current = rest
-
-  // When a tram advances to the main card, transfer its alert state
-  if (next.tripId && activeAlerts[next.tripId] && !nextAlert) {
-    setNextAlert(true)
-    setActiveAlerts(prev => { const n = {...prev}; delete n[next.tripId]; return n })
-  }
 
   return (
     <>
