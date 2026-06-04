@@ -229,6 +229,9 @@ export default function DeparturesList({ departures }) {
     const handleKey = (e) => {
       const num = parseInt(e.key, 10)
       if (!isNaN(num)) {
+        // Preload sounds on any key press (user gesture unlocks AudioContext)
+        loadSound('notify.wav').catch(() => {})
+        loadSound('cancelled.wav').catch(() => {})
         if (num === 0) setNextAlert(v => !v)
         else if (num >= 1 && num <= 9) setActiveAlerts(prev => ({ ...prev, [num - 1]: !prev[num - 1] }))
       }
