@@ -225,15 +225,19 @@ export default function DeparturesList({ departures }) {
   const [activeAlerts, setActiveAlerts] = useState({})
   const [nextAlert, setNextAlert] = useState(false)
 
+  const restRef = useRef([])
+
   useEffect(() => {
     const handleKey = (e) => {
       const num = parseInt(e.key, 10)
       if (!isNaN(num)) {
-        // Preload sounds on any key press (user gesture unlocks AudioContext)
         loadSound('notify.wav').catch(() => {})
         loadSound('cancelled.wav').catch(() => {})
         if (num === 0) setNextAlert(v => !v)
-        else if (num >= 1 && num <= 9) setActiveAlerts(prev => ({ ...prev, [num - 1]: !prev[num - 1] }))
+        else if (num >= 1 && num <= 9) {
+          const dep = restRef.current[num - 1]
+          if (dep?.tripId) setActiveAlerts(prev => ({ ...prev, [dep.tripId]: !prev[dep.tripId] }))
+        }
       }
     }
     window.addEventListener('keydown', handleKey)
@@ -250,6 +254,8 @@ export default function DeparturesList({ departures }) {
   const rest = future.filter((_, i) => i !== (nextIdx >= 0 ? nextIdx : 0))
 
   if (!next) return <div className="empty-state"><p>No upcoming departures.</p></div>
+
+  restRef.current = rest
 
   return (
     <>
@@ -285,8 +291,8 @@ export default function DeparturesList({ departures }) {
                   key={dep.tripId ?? i}
                   departure={dep}
                   index={i}
-                  active={!!activeAlerts[i]}
-                  onToggle={() => setActiveAlerts(prev => ({ ...prev, [i]: !prev[i] }))}
+                  active={!!activeAlerts[dep.tripId]}
+                  onToggle={() => setActiveAlerts(prev => ({ ...prev, [dep.tripId]: !prev[dep.tripId] }))}
                 />
               ))}
             </tbody>
