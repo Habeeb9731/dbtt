@@ -265,6 +265,8 @@ a:hover { text-decoration: underline; }
   .dashboard-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
+    height: auto;
+    overflow: visible;
   }
   .dashboard-left {
     height: auto;
@@ -272,7 +274,9 @@ a:hover { text-decoration: underline; }
     overflow-y: visible;
   }
   .dashboard-right {
+    height: auto;
     max-height: none;
+    overflow-y: visible;
   }
 }
 
