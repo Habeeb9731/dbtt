@@ -257,6 +257,12 @@ export default function DeparturesList({ departures }) {
 
   restRef.current = rest
 
+  // When a tram advances to the main card, transfer its alert state
+  if (next.tripId && activeAlerts[next.tripId] && !nextAlert) {
+    setNextAlert(true)
+    setActiveAlerts(prev => { const n = {...prev}; delete n[next.tripId]; return n })
+  }
+
   return (
     <>
       <NextTramCard departure={next} notifyActive={nextAlert} onToggleNotify={() => setNextAlert(v => !v)} />
