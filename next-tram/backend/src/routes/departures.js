@@ -56,6 +56,25 @@ function findHbfArrival(stopovers, fromStopId) {
   }
 }
 
+function findStopArrival(stopovers, fromStopId, nameParts) {
+  if (!Array.isArray(stopovers)) return null
+  const fromIndex = stopovers.findIndex(s => s.stop?.id === fromStopId)
+  const downstream = fromIndex >= 0 ? stopovers.slice(fromIndex + 1) : stopovers
+  const match = downstream.find(s => {
+    const name = (s.stop?.name ?? '').toLowerCase()
+    return nameParts.some(p => name.includes(p))
+  })
+  if (!match) return null
+  return toHHMM(match.arrival ?? match.plannedArrival)
+}
+
+function logStopNames(stopovers, fromStopId) {
+  if (!Array.isArray(stopovers)) return
+  const fromIndex = stopovers.findIndex(s => s.stop?.id === fromStopId)
+  const downstream = fromIndex >= 0 ? stopovers.slice(fromIndex + 1) : stopovers
+  console.log('[stops]', downstream.map(s => s.stop?.name).filter(Boolean))
+}
+
 async function loadTripStopovers(dep) {
   if (!dep.tripId) return null
 
@@ -108,7 +127,11 @@ router.get('/', async (req, res) => {
     const departures = saarbahnDeps.map((dep, index) => {
       const planned = dep.plannedWhen
       const actual = dep.when ?? dep.plannedWhen
-      const hbf = findHbfArrival(dep.stopovers ?? tripStopovers[index], sourceStopId)
+      const stopovers = dep.stopovers ?? tripStopovers[index]
+      if (index === 0) logStopNames(stopovers, sourceStopId)
+      const hbf = findHbfArrival(stopovers, sourceStopId)
+      const landwehrplatzArrival = findStopArrival(stopovers, sourceStopId, ['landwehrplatz'])
+      const johanneskircheArrival = findStopArrival(stopovers, sourceStopId, ['johanneskirche', 'johannis'])
 
       const warnings = (dep.remarks ?? [])
         .filter(r => r.type === 'warning' || r.type === 'status')
@@ -132,6 +155,8 @@ router.get('/', async (req, res) => {
         arrivalISO: hbf?.arrivalISO ?? null,
         arrivalDelay: hbf?.arrivalDelay ?? 0,
         goesToHbf: hbf !== null,
+        landwehrplatz: landwehrplatzArrival ?? null,
+        johanneskirche: johanneskircheArrival ?? null,
         platform: dep.platform ?? dep.plannedPlatform ?? null,
         remarks: warnings,
       }

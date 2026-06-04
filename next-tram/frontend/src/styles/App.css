@@ -43,6 +43,239 @@ a:hover { text-decoration: underline; }
   min-height: 100dvh;
 }
 
+/* ── Dashboard Layout ──────────────────────────────────── */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: var(--gap-md);
+  height: 100dvh;
+  padding: var(--gap-md);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.dashboard-left {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-top: 0;
+}
+.dashboard-left::-webkit-scrollbar { display: none; }
+
+.dashboard-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 0;
+  height: 100%;
+}
+.dashboard-right::-webkit-scrollbar { display: none; }
+
+/* ── Weather Panel ─────────────────────────────────────── */
+.wp-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  height: 100%;
+}
+
+.wp-card {
+  background: #12152a;
+  border: 1px solid rgba(255 255 255 / 0.07);
+  border-radius: 18px;
+  padding: var(--gap-lg) var(--gap-lg);
+  box-shadow: 0 2px 12px rgba(0 0 0 / 0.3);
+}
+
+.wp-greeting {
+  border-radius: var(--r-lg);
+}
+.wp-greeting-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.wp-greeting-text {
+  flex: 1;
+}
+.wp-greeting-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.wp-greeting-label {
+  font-size: 0.85rem;
+  color: rgba(255 255 255 / 0.5);
+}
+.wp-greeting-name {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.wp-clock-label {
+  font-size: 0.8rem;
+  color: rgba(255 255 255 / 0.4);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.wp-clock-time {
+  font-size: 3.4rem;
+  font-weight: 500;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.wp-clock-ampm {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: rgba(255 255 255 / 0.45);
+  vertical-align: super;
+}
+.wp-clock-date {
+  font-size: 0.9rem;
+  color: rgba(255 255 255 / 0.35);
+  margin-top: 6px;
+}
+
+.wp-conditions {}
+.wp-cond-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-md);
+  margin-bottom: var(--gap-sm);
+}
+.wp-cond-row:last-child { margin-bottom: 0; }
+.wp-cond-item {}
+.wp-cond-label {
+  font-size: 0.72rem;
+  color: rgba(255 255 255 / 0.35);
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.wp-cond-value {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.1;
+}
+.wp-cond-time { font-size: 1.8rem; }
+.wp-cond-sub {
+  font-size: 0.72rem;
+  color: rgba(255 255 255 / 0.35);
+  margin-top: 2px;
+}
+
+.wp-section-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #f5c518;
+  margin-bottom: var(--gap-sm);
+}
+
+.wp-hourly {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.wp-hourly::-webkit-scrollbar { display: none; }
+.wp-hourly-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 62px;
+  padding: 12px 8px;
+  border-radius: 14px;
+  background: rgba(255 255 255 / 0.05);
+  flex-shrink: 0;
+}
+.wp-hourly-current {
+  background: rgba(124 106 254 / 0.25);
+  border: 1px solid rgba(124 106 254 / 0.5);
+  min-width: 60px;
+}
+.wp-hourly-time {
+  font-size: 0.65rem;
+  color: rgba(255 255 255 / 0.45);
+  white-space: nowrap;
+}
+.wp-hourly-current .wp-hourly-time {
+  color: #a89bff;
+  font-weight: 600;
+}
+.wp-hourly-temp {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+.wp-hourly-current .wp-hourly-temp {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #fff;
+}
+.wp-hourly-prob {
+  font-size: 0.6rem;
+  color: rgba(130 180 255 / 0.7);
+}
+
+.wp-daily {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wp-daily-row {
+  display: grid;
+  grid-template-columns: 1fr 20px 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255 255 255 / 0.05);
+}
+.wp-daily-row:last-child { border-bottom: none; }
+.wp-daily-day {
+  font-size: 0.8rem;
+  color: rgba(255 255 255 / 0.6);
+}
+.wp-daily-condition {
+  font-size: 0.78rem;
+  color: rgba(255 255 255 / 0.4);
+}
+.wp-daily-range {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.wp-daily-prob {
+  font-size: 0.72rem;
+  color: rgba(130 180 255 / 0.6);
+  min-width: 36px;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+  .dashboard-left {
+    height: auto;
+    position: static;
+    overflow-y: visible;
+  }
+  .dashboard-right {
+    max-height: none;
+  }
+}
+
 /* ── Glass card ────────────────────────────────────────── */
 .glass-card {
   background: var(--glass-bg);
@@ -79,7 +312,7 @@ a:hover { text-decoration: underline; }
 .header-title { min-width: 0; }
 .header-title h1 {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   color: var(--text-primary);
   white-space: nowrap;
@@ -182,7 +415,7 @@ a:hover { text-decoration: underline; }
 .nd-line-badge {
   background: var(--brand);
   color: #fff;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 1rem;
   padding: 4px 14px;
   border-radius: var(--r-pill);
@@ -220,7 +453,7 @@ a:hover { text-decoration: underline; }
 .nd-countdown-timer {
   display: block;
   font-size: clamp(3.5rem, 15vw, 5rem);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
   color: var(--text-primary);
@@ -241,7 +474,7 @@ a:hover { text-decoration: underline; }
 .nd-countdown-text {
   display: block;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-muted);
 }
 .cancelled-text { color: var(--cancelled); }
@@ -265,7 +498,7 @@ a:hover { text-decoration: underline; }
   color: var(--text-muted);
   margin-bottom: 4px;
 }
-.nd-time-value { font-size: 1.4rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.nd-time-value { font-size: 1.4rem; font-weight: 500; font-variant-numeric: tabular-nums; }
 .nd-time-divider { color: var(--text-muted); }
 .nd-time-divider svg { width: 32px; height: 12px; }
 .time-planned {
@@ -329,7 +562,7 @@ a:hover { text-decoration: underline; }
 .dc-line-badge {
   background: var(--brand);
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.8rem;
   min-width: 40px;
   text-align: center;
@@ -359,7 +592,7 @@ a:hover { text-decoration: underline; }
 .dc-times { display: flex; flex-direction: column; align-items: flex-end; }
 .dc-time {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 .time-cancelled { text-decoration: line-through; color: var(--text-muted); }
@@ -373,7 +606,7 @@ a:hover { text-decoration: underline; }
 .dc-actual-time {
   display: block;
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--delayed);
   font-variant-numeric: tabular-nums;
 }
@@ -498,7 +731,7 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--glass-border);
   flex-shrink: 0;
 }
-.settings-header h2 { font-size: 1.1rem; font-weight: 700; }
+.settings-header h2 { font-size: 1.1rem; font-weight: 500; }
 .settings-body {
   flex: 1;
   overflow-y: auto;
@@ -527,7 +760,7 @@ a:hover { text-decoration: underline; }
   background: var(--brand);
   color: #fff;
   border-radius: var(--r-md);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1rem;
   transition: background var(--dur-fast), transform var(--dur-fast);
 }
@@ -812,7 +1045,7 @@ body {
 .hero-time {
   font-size: clamp(3rem, 7vw, 4.6rem);
   line-height: 0.95;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0;
   color: #fff;
   font-variant-numeric: tabular-nums;
@@ -940,7 +1173,7 @@ body {
   color: #fff;
   font-size: 1.65rem;
   line-height: 1;
-  font-weight: 800;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
@@ -982,7 +1215,7 @@ body {
   margin-bottom: 18px;
   color: rgba(255 255 255 / 0.92);
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .nd-header {
@@ -1021,7 +1254,7 @@ body {
   color: #2f86ff;
   font-size: clamp(2.4rem, 6vw, 3.8rem);
   line-height: 1;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .nd-countdown-timer {
@@ -1323,15 +1556,15 @@ body {
 }
 .hero-relative {
   font-size: 2.4rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--ontime);
   line-height: 1;
 }
-.hero-cancelled { font-size: 2rem; font-weight: 700; color: var(--cancelled); }
-.hero-departed  { font-size: 2rem; font-weight: 700; color: var(--text-muted); }
+.hero-cancelled { font-size: 2rem; font-weight: 500; color: var(--cancelled); }
+.hero-departed  { font-size: 2rem; font-weight: 500; color: var(--text-muted); }
 .hero-dep-time {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-primary);
   line-height: 1.1;
   letter-spacing: -1px;
@@ -1346,7 +1579,7 @@ body {
 .hero-line-badge {
   background: var(--brand);
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.8rem;
   padding: 3px 10px;
   border-radius: var(--r-sm);
@@ -1418,12 +1651,12 @@ body {
   height: 28px;
   border-radius: 6px;
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.78rem;
 }
 .dep-card-time {
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-primary);
   line-height: 1;
   display: flex;
@@ -1436,7 +1669,7 @@ body {
 }
 .dep-card-time-actual {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--delayed);
 }
 .dep-card-relative {
@@ -1498,7 +1731,7 @@ body {
 .topbar-left {}
 .topbar-time {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -1px;
   line-height: 1;
   color: var(--text-primary);
@@ -1526,7 +1759,7 @@ body {
 }
 .topbar-weather svg { width: 28px; height: 28px; }
 .topbar-weather-info { display: flex; flex-direction: column; line-height: 1.2; }
-.topbar-temp { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+.topbar-temp { font-size: 1.1rem; font-weight: 500; color: var(--text-primary); }
 .topbar-cond { font-size: 0.7rem; color: var(--text-muted); }
 
 /* Timetable section */
@@ -1594,7 +1827,7 @@ body {
   padding: 3px 8px;
   border-radius: 6px;
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.78rem;
   white-space: nowrap;
 }
@@ -1684,7 +1917,7 @@ body {
   padding: 5px 14px;
   border-radius: 8px;
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1rem;
   flex-shrink: 0;
 }
@@ -1706,20 +1939,20 @@ body {
 .ntc-countdown { text-align: center; display: flex; justify-content: center; align-items: center; }
 .ntc-relative {
   font-size: 2.8rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--ontime);
   line-height: 1;
 }
-.ntc-cancelled { font-size: 1.4rem; font-weight: 700; color: var(--cancelled); }
+.ntc-cancelled { font-size: 1.4rem; font-weight: 500; color: var(--cancelled); }
 .ntc-time {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   text-align: right;
 }
-.ntc-time > span { font-size: 1.8rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; }
+.ntc-time > span { font-size: 1.8rem; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; }
 .ntc-time-planned { font-size: 0.8rem; color: var(--text-muted); text-decoration: line-through; }
-.ntc-time-actual  { font-size: 1.8rem; font-weight: 700; color: var(--delayed); font-variant-numeric: tabular-nums; line-height: 1; }
+.ntc-time-actual  { font-size: 1.8rem; font-weight: 500; color: var(--delayed); font-variant-numeric: tabular-nums; line-height: 1; }
 .ntc-status {
   font-size: 0.78rem;
   font-weight: 600;
@@ -1771,7 +2004,7 @@ body {
 
 .ntc-label {
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   color: rgba(148 163 184 / 0.8);
   margin-bottom: var(--gap-sm);
@@ -1791,14 +2024,14 @@ body {
   height: 40px;
   border-radius: 10px;
   color: #fff;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 1.1rem;
   flex-shrink: 0;
 }
 
 .ntc-direction {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
@@ -1813,7 +2046,7 @@ body {
 
 .ntc-mins {
   font-size: 4.5rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #00e5a0;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -1821,14 +2054,14 @@ body {
 
 .ntc-mins-label {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #00e5a0;
   line-height: 1;
 }
 
 .ntc-cancelled {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--cancelled);
 }
 
@@ -1857,7 +2090,7 @@ body {
 
 .ntc-time-big {
   font-size: 2.8rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #fff;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -1899,7 +2132,7 @@ body {
   padding: 12px 16px;
   text-align: left;
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.08em;
   color: rgba(148 163 184 / 0.8);
 }
@@ -1916,17 +2149,17 @@ body {
 .tt-line-badge {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 4px 10px; border-radius: 7px;
-  color: #fff; font-weight: 700; font-size: 0.82rem;
+  color: #fff; font-weight: 500; font-size: 0.82rem;
 }
 
 .tt-time { white-space: nowrap; }
-.tt-time-value { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.tt-time-value { font-size: 1.05rem; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .tt-time-stack { display: flex; flex-direction: column; line-height: 1.2; }
 .tt-time-planned { font-size: 0.72rem; color: var(--text-muted); text-decoration: line-through; }
-.tt-time-actual  { font-size: 1.05rem; font-weight: 700; color: var(--delayed); font-variant-numeric: tabular-nums; }
+.tt-time-actual  { font-size: 1.05rem; font-weight: 500; color: var(--delayed); font-variant-numeric: tabular-nums; }
 
 .tt-in { width: 100px; }
-.tt-relative { font-size: 0.95rem; font-weight: 700; }
+.tt-relative { font-size: 0.95rem; font-weight: 500; }
 .tt-relative.status-ontime  { color: #00e5a0; }
 .tt-relative.status-delayed { color: var(--delayed); }
 
@@ -1954,7 +2187,7 @@ body {
 .timetable-wrap .upcoming-label {
   padding: 14px 16px 0;
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   color: rgba(148 163 184 / 0.8);
 }
@@ -1963,15 +2196,15 @@ body {
 .ntc-line-badge { white-space: nowrap; min-width: 52px; }
 .ntc-mins-now {
   font-size: 4rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #00e5a0;
   line-height: 1;
 }
 
 /* ── Bigger timetable times ────────────────────────────── */
-.tt-time-value { font-size: 1.4rem !important; font-weight: 700 !important; }
-.tt-time-actual { font-size: 1.4rem !important; font-weight: 700 !important; }
-.tt-relative { font-size: 1.2rem !important; font-weight: 700 !important; }
+.tt-time-value { font-size: 1.4rem !important; font-weight: 500 !important; }
+.tt-time-actual { font-size: 1.4rem !important; font-weight: 500 !important; }
+.tt-relative { font-size: 1.2rem !important; font-weight: 500 !important; }
 
 /* ══════════════════════════════════════════════════════════
    FINAL MOCKUP STYLES
@@ -2021,7 +2254,7 @@ body {
 /* label row */
 .ntc-label {
   display: flex; align-items: center; gap: 6px;
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+  font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em;
   color: rgba(160 140 255 / 0.85);
 }
 .ntc-info-row {
@@ -2031,32 +2264,32 @@ body {
   display: inline-flex; align-items: center; justify-content: center;
   width: 56px; height: 44px; border-radius: 10px;
   background: linear-gradient(135deg, #6d28d9, #4f46e5);
-  color: #fff; font-weight: 800; font-size: 1.1rem;
+  color: #fff; font-weight: 600; font-size: 1.1rem;
   white-space: nowrap; flex-shrink: 0;
   box-shadow: 0 4px 15px rgba(99 102 241 / 0.4);
 }
 .ntc-direction {
-  font-size: 1.6rem; font-weight: 700; color: #fff;
+  font-size: 1.6rem; font-weight: 500; color: #fff;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
 /* countdown */
 .ntc-countdown { display: flex; align-items: baseline; gap: 2px; }
 .ntc-num {
-  font-size: 5rem; font-weight: 800; line-height: 1;
+  font-size: 5rem; font-weight: 600; line-height: 1;
   background: linear-gradient(135deg, #ff6b35, #e91e8c);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .ntc-min-label {
-  font-size: 2rem; font-weight: 700;
+  font-size: 2rem; font-weight: 500;
   background: linear-gradient(135deg, #ff6b35, #e91e8c);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.ntc-cancelled { font-size: 2rem; font-weight: 700; color: var(--cancelled); }
+.ntc-cancelled { font-size: 2rem; font-weight: 500; color: var(--cancelled); }
 
 /* departure time */
 .ntc-dep-time {
-  font-size: 2.8rem; font-weight: 800; color: #fff;
+  font-size: 2.8rem; font-weight: 600; color: #fff;
   font-variant-numeric: tabular-nums; line-height: 1;
 }
 .ntc-pill {
@@ -2080,7 +2313,7 @@ body {
 .upcoming-header {
   display: flex; align-items: center; gap: 8px;
   padding: var(--gap-md) var(--gap-lg);
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
   color: rgba(160 140 255 / 0.85);
   border-bottom: 1px solid rgba(255 255 255 / 0.06);
 }
@@ -2088,7 +2321,7 @@ body {
 .timetable thead tr { border-bottom: 1px solid rgba(255 255 255 / 0.06); }
 .timetable th {
   padding: 10px 16px; text-align: left;
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+  font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em;
   color: rgba(148 163 184 / 0.6);
 }
 .tt-vsep-h { width: 1px; padding: 0; background: rgba(255 255 255 / 0.07); }
@@ -2108,12 +2341,12 @@ body {
   display: inline-flex; align-items: center; justify-content: center;
   width: 46px; height: 36px; border-radius: 8px;
   background: linear-gradient(135deg, #6d28d9, #4f46e5);
-  color: #fff; font-weight: 800; font-size: 0.85rem;
+  color: #fff; font-weight: 600; font-size: 0.85rem;
   box-shadow: 0 2px 10px rgba(99 102 241 / 0.3);
 }
 
 /* time */
-.tt-time-val { font-size: 1.35rem !important; font-weight: 700 !important; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.tt-time-val { font-size: 1.35rem !important; font-weight: 500 !important; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .tt-time-val.delayed { color: var(--delayed) !important; }
 .tt-time-planned { font-size: 0.72rem; color: var(--text-muted); text-decoration: line-through; display: block; }
 .tt-time-stack { display: flex; flex-direction: column; }
@@ -2121,7 +2354,7 @@ body {
 /* relative */
 .tt-in { min-width: 100px; }
 .tt-relative {
-  font-size: 1.15rem !important; font-weight: 700 !important;
+  font-size: 1.15rem !important; font-weight: 500 !important;
   background: linear-gradient(135deg, #ff6b35, #e91e8c);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
@@ -2153,21 +2386,47 @@ body {
 .ntc2-card {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: 1fr 18px;
-  min-height: 220px;
+  grid-template-rows: 1fr auto 18px;
+  min-height: 260px;
   border-radius: var(--r-lg);
   border: 1px solid rgba(255 255 255 / 0.08);
-  background: rgba(30 30 35 / 0.6);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: #12152a;
   box-shadow: 0 24px 60px rgba(0 0 0 / 0.6), 0 1px 0 rgba(255 255 255 / 0.12) inset;
   overflow: hidden;
   margin-bottom: var(--gap-md);
 }
 
+.ntc2-stops {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  padding: 10px var(--gap-lg) 14px;
+  border-top: 1px solid rgba(255 255 255 / 0.06);
+}
+.ntc2-stop-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.ntc2-stop-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #f5c518;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ntc2-stop-time {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
 .ntc2-progress-track {
   grid-column: 1 / -1;
-  background: rgba(255 255 255 / 0.06);
+  background: #12152a;
   height: 18px;
   position: relative;
 }
@@ -2229,7 +2488,7 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   color: #f5c518;
 }
@@ -2249,14 +2508,14 @@ body {
   border-radius: 50%;
   border: 2px solid rgba(160 140 255 / 0.7);
   color: #fff;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 0.85rem;
   flex-shrink: 0;
 }
 
 .ntc2-direction {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
@@ -2314,7 +2573,7 @@ body {
 
 .ntc2-arrives-label {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   color: #f5c518;
   margin-bottom: 4px;
@@ -2322,7 +2581,7 @@ body {
 
 .ntc2-num {
   font-size: 7rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
@@ -2331,21 +2590,27 @@ body {
 
 .ntc2-min-label {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.15em;
   color: #f5c518;
 }
 
 /* ── Upcoming table ────────────────────────────────────── */
 .tt2-wrap {
-  background: rgba(30 30 35 / 0.6);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: #12152a;
   border: 1px solid rgba(255 255 255 / 0.08);
   border-radius: var(--r-lg);
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(0 0 0 / 0.6), 0 1px 0 rgba(255 255 255 / 0.12) inset;
+  flex: 1;
 }
+
+.wp-card-grow {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.wp-card-grow::-webkit-scrollbar { display: none; }
 
 .tt2-header {
   display: flex;
@@ -2353,20 +2618,34 @@ body {
   gap: 8px;
   padding: 12px var(--gap-lg);
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.1em;
   color: #f5c518;
   border-bottom: 1px solid rgba(255 255 255 / 0.06);
 }
 
-.tt2-table { width: 100%; border-collapse: collapse; }
+.tt2-table { width: 100%; border-collapse: collapse; height: 100%; table-layout: fixed; }
+.tt2-table th, .tt2-table td { white-space: nowrap; }
+.tt2-table th:nth-child(1), .tt2-table td:nth-child(1) { width: 5%; }
+.tt2-table th:nth-child(2), .tt2-table td:nth-child(2) { width: 13%; }
+.tt2-table th:nth-child(3), .tt2-table td:nth-child(3) { width: 4%; text-align: center; }
+.tt2-table th:nth-child(4), .tt2-table td:nth-child(4) { width: 7%; }
+.tt2-table th:nth-child(5), .tt2-table td:nth-child(5) { width: 18%; }
+.tt2-table th:nth-child(6), .tt2-table td:nth-child(6) { width: 13%; }
+.tt2-table th:nth-child(7), .tt2-table td:nth-child(7) { width: 13%; }
+.tt2-table th:nth-child(8), .tt2-table td:nth-child(8) { width: 13%; }
+.tt2-table th:nth-child(9), .tt2-table td:nth-child(9) { width: 14%; text-align: right; }
+
+.tt2-stop-time { white-space: nowrap; }
+
+.tt2-stop-time { font-size: 1.1rem; font-weight: 500; color: rgba(255 255 255 / 0.6); font-variant-numeric: tabular-nums; }
 
 .tt2-table thead tr { border-bottom: 1px solid rgba(255 255 255 / 0.06); }
 .tt2-table th {
   padding: 10px var(--gap-lg);
   text-align: left;
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.08em;
   color: #f5c518;
 }
@@ -2391,14 +2670,14 @@ body {
   border-radius: 7px;
   border: 1.5px solid rgba(160 140 255 / 0.5);
   color: rgba(200 190 255 / 0.9);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.8rem;
 }
 
 .tt2-time { white-space: nowrap; }
-.tt2-time-val { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.tt2-time-val { font-size: 1.3rem; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .tt2-time-planned { font-size: 0.72rem; color: var(--text-muted); text-decoration: line-through; }
-.tt2-time-actual  { font-size: 1.3rem; font-weight: 700; color: var(--delayed); font-variant-numeric: tabular-nums; }
+.tt2-time-actual  { font-size: 1.3rem; font-weight: 500; color: var(--delayed); font-variant-numeric: tabular-nums; }
 
 .tt2-arrow { color: rgba(255 255 255 / 0.2); font-size: 1rem; width: 30px; }
 
@@ -2426,17 +2705,17 @@ body {
 .tt2-dot { display: none; }
 
 /* ── Bigger tt2 times ──────────────────────────────────── */
-.tt2-time-val  { font-size: 1.4rem !important; font-weight: 700 !important; }
-.tt2-time-actual { font-size: 1.4rem !important; font-weight: 700 !important; }
+.tt2-time-val  { font-size: 1.4rem !important; font-weight: 500 !important; }
+.tt2-time-actual { font-size: 1.4rem !important; font-weight: 500 !important; }
 .tt2-relative  { font-size: 1.1rem !important; font-weight: 600 !important; }
 
 /* ── Times only bigger, relative stays normal ──────────── */
 .tt2-relative  { font-size: 0.9rem !important; font-weight: 500 !important; color: rgba(180 200 255 / 0.6) !important; }
-.tt2-time-val  { font-size: 2.2rem !important; font-weight: 700 !important; }
-.tt2-time-actual { font-size: 2.2rem !important; font-weight: 700 !important; }
+.tt2-time-val  { font-size: 2.2rem !important; font-weight: 500 !important; }
+.tt2-time-actual { font-size: 2.2rem !important; font-weight: 500 !important; }
 
 /* ── Next tram card: big departure time ─────────────────── */
-.ntc2-deptime { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.ntc2-deptime { font-size: 1.4rem; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .ntc2-center {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: var(--gap-md) var(--gap-lg);
@@ -2445,8 +2724,8 @@ body {
 }
 .ntc2-center .ntc2-image { margin-top: 6px; }
 .ntc2-center .ntc2-image img { width: 120px; opacity: 0.85; }
-.ntc2-time-label { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.12em; color: #f5c518; text-align: center; width: 100%; }
-.ntc2-deptime-big { font-size: 3rem; font-weight: 800; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; text-align: center; width: 100%; }
+.ntc2-time-label { font-size: 0.9rem; font-weight: 500; letter-spacing: 0.12em; color: #f5c518; text-align: center; width: 100%; }
+.ntc2-deptime-big { font-size: 3rem; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; text-align: center; width: 100%; }
 
 /* ── Hero Card ─────────────────────────────────────────── */
 .hero-card {
@@ -2454,9 +2733,7 @@ body {
   grid-template-columns: 1fr auto 1fr;
   align-items: stretch;
   gap: var(--gap-lg);
-  background: rgba(30 30 35 / 0.6);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: #12152a;
   border: 1px solid rgba(255 255 255 / 0.08);
   border-radius: 24px;
   padding: var(--gap-lg);
@@ -2495,7 +2772,7 @@ body {
 }
 .hero-weather-temp {
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 500;
   color: rgba(255 255 255 / 0.5);
   line-height: 1;
 }
@@ -2512,6 +2789,22 @@ body {
   color: rgba(255 255 255 / 0.25);
   margin-top: 2px;
 }
+
+.weather-summary {
+  font-size: 0.82rem;
+  color: rgba(255 255 255 / 0.4);
+  text-align: center;
+  padding: 8px var(--gap-lg) 14px;
+  font-style: italic;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  border: 1px solid rgba(255 255 255 / 0.08);
+  border-top: none;
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+  margin-top: -16px;
+  padding-top: 20px;
+}
 .hero-card-actions {
   display: flex;
   gap: var(--gap-sm);
@@ -2519,7 +2812,7 @@ body {
 .hero-date {
   font-size: 1.6rem;
   color: rgba(255 255 255 / 0.5);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.3;
 }
 /* ── Time Card ─────────────────────────────────────────── */
@@ -2538,7 +2831,7 @@ body {
 }
 .tcard-time {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -2550,7 +2843,7 @@ body {
 }
 .tcard-seconds {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -2590,7 +2883,7 @@ body {
 }
 .wcard-temp {
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   line-height: 1;
 }
@@ -2603,4 +2896,4 @@ body {
 /* ── Split relative: big number, small labels ──────────── */
 .tt2-relative-wrap { display: inline-flex; align-items: baseline; gap: 3px; white-space: nowrap; }
 .tt2-rel-label { font-size: 0.78rem !important; font-weight: 400 !important; color: rgba(180 200 255 / 0.55) !important; }
-.tt2-rel-num   { font-size: 2.4rem !important; font-weight: 700 !important; color: var(--text-primary) !important; font-variant-numeric: tabular-nums; line-height: 1; }
+.tt2-rel-num   { font-size: 2.4rem !important; font-weight: 500 !important; color: var(--text-primary) !important; font-variant-numeric: tabular-nums; line-height: 1; }

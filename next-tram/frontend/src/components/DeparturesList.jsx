@@ -52,6 +52,30 @@ function NextTramCard({ departure }) {
         </span>
       </div>
 
+      {/* Stop times row */}
+      {(departure.johanneskirche || departure.landwehrplatz || departure.arrival) && (
+        <div className="ntc2-stops">
+          {departure.landwehrplatz && (
+            <div className="ntc2-stop-item">
+              <div className="ntc2-stop-label">Landwehrplatz</div>
+              <div className="ntc2-stop-time">{to12hr(departure.landwehrplatz)}</div>
+            </div>
+          )}
+          {departure.johanneskirche && (
+            <div className="ntc2-stop-item">
+              <div className="ntc2-stop-label">Johanneskirche</div>
+              <div className="ntc2-stop-time">{to12hr(departure.johanneskirche)}</div>
+            </div>
+          )}
+          {departure.arrival && (
+            <div className="ntc2-stop-item">
+              <div className="ntc2-stop-label">Hbf</div>
+              <div className="ntc2-stop-time">{to12hr(departure.arrival)}</div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Progress bar */}
       <div className="ntc2-progress-track">
         <div className="ntc2-progress-bar" style={{ width: `${progress}%` }} />
@@ -87,6 +111,9 @@ function TimetableRow({ departure }) {
         )}
       </td>
       <td className="tt2-direction">{departure.direction || '—'}</td>
+      <td className="tt2-stop-time">{departure.landwehrplatz ? to12hr(departure.landwehrplatz) : '—'}</td>
+      <td className="tt2-stop-time">{departure.johanneskirche ? to12hr(departure.johanneskirche) : '—'}</td>
+      <td className="tt2-stop-time">{departure.arrival ? to12hr(departure.arrival) : '—'}</td>
       <td className="tt2-status">
         <span className={`tt2-status-text ${statusClass}`}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5.636 5.636a9 9 0 1 0 12.728 0"/><path d="M9.172 9.172a4 4 0 1 0 5.656 0"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
@@ -126,8 +153,11 @@ export default function DeparturesList({ departures }) {
                   DEPARTURE
                 </th>
                 <th>→</th>
-                <th>IN (MIN)</th>
+                <th>MIN</th>
                 <th>DIRECTION</th>
+                <th>LANDWEHRPLATZ</th>
+                <th>JOHANNESKIRCHE</th>
+                <th>HBF</th>
                 <th>STATUS</th>
               </tr>
             </thead>
