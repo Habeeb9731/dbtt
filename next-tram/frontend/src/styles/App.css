@@ -278,10 +278,8 @@ a:hover { text-decoration: underline; }
 
 /* ── Glass card ────────────────────────────────────────── */
 .glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
-  border: 1px solid var(--glass-border);
+  background: #12152a;
+  border: 1px solid rgba(255 255 255 / 0.1);
   border-radius: var(--r-lg);
   box-shadow: var(--glass-shadow);
   transition: background var(--dur-base) var(--ease-out),
@@ -1192,10 +1190,10 @@ body {
 }
 
 .glass-card {
-  background: linear-gradient(180deg, rgba(255 255 255 / 0.055), rgba(255 255 255 / 0.025));
-  border: 1px solid rgba(255 255 255 / 0.16);
+  background: #12152a;
+  border: 1px solid rgba(255 255 255 / 0.1);
   border-radius: 16px;
-  box-shadow: inset 0 1px 0 rgba(255 255 255 / 0.07), 0 20px 60px rgba(0 0 0 / 0.38);
+  box-shadow: 0 20px 60px rgba(0 0 0 / 0.38);
 }
 
 .next-departure-card {
@@ -2626,17 +2624,77 @@ body {
 
 .tt2-table { width: 100%; border-collapse: collapse; height: 100%; table-layout: fixed; }
 .tt2-table th, .tt2-table td { white-space: nowrap; }
-.tt2-table th:nth-child(1), .tt2-table td:nth-child(1) { width: 5%; }
-.tt2-table th:nth-child(2), .tt2-table td:nth-child(2) { width: 13%; }
-.tt2-table th:nth-child(3), .tt2-table td:nth-child(3) { width: 4%; text-align: center; }
-.tt2-table th:nth-child(4), .tt2-table td:nth-child(4) { width: 7%; }
-.tt2-table th:nth-child(5), .tt2-table td:nth-child(5) { width: 18%; }
-.tt2-table th:nth-child(6), .tt2-table td:nth-child(6) { width: 13%; }
-.tt2-table th:nth-child(7), .tt2-table td:nth-child(7) { width: 13%; }
-.tt2-table th:nth-child(8), .tt2-table td:nth-child(8) { width: 13%; }
-.tt2-table th:nth-child(9), .tt2-table td:nth-child(9) { width: 14%; text-align: right; }
+.tt2-table th:nth-child(1), .tt2-table td:nth-child(1) { width: 3%; text-align: center; }
+.tt2-table th:nth-child(2), .tt2-table td:nth-child(2) { width: 3%; text-align: center; }
+.tt2-table th:nth-child(3), .tt2-table td:nth-child(3) { width: 5%; }
+.tt2-table th:nth-child(4), .tt2-table td:nth-child(4) { width: 12%; }
+.tt2-table th:nth-child(5), .tt2-table td:nth-child(5) { width: 4%; text-align: center; }
+.tt2-table th:nth-child(6), .tt2-table td:nth-child(6) { width: 6%; }
+.tt2-table th:nth-child(7), .tt2-table td:nth-child(7) { width: 16%; }
+.tt2-table th:nth-child(8), .tt2-table td:nth-child(8) { width: 12%; }
+.tt2-table th:nth-child(9), .tt2-table td:nth-child(9) { width: 12%; }
+.tt2-table th:nth-child(10), .tt2-table td:nth-child(10) { width: 12%; }
+.tt2-table th:nth-child(11), .tt2-table td:nth-child(11) { width: 15%; text-align: right; }
 
 .tt2-stop-time { white-space: nowrap; }
+
+.ntc2-notify-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255 255 255 / 0.15);
+  background: none;
+  color: rgba(255 255 255 / 0.35);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ntc2-notify-btn:hover { border-color: #f5c518; color: #f5c518; }
+.ntc2-notify-btn--on { border-color: #f5c518; color: #f5c518; background: rgba(245 197 24 / 0.1); }
+
+.tt2-row--alerted { background: rgba(245 197 24 / 0.06); }
+.tt2-row--alerted .tt2-serial { color: #f5c518; font-weight: 600; }
+
+.tt2-serial {
+  font-size: 0.75rem;
+  color: rgba(255 255 255 / 0.3);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.tt2-bell-cell { text-align: center; }
+
+.tt2-bell {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255 255 255 / 0.3);
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tt2-bell:hover { color: rgba(255 255 255 / 0.7); background: rgba(255 255 255 / 0.06); }
+.tt2-bell--active { color: #f5c518; }
+.tt2-bell--active:hover { color: #f5c518; }
+
+@keyframes bell-ring {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(15deg); }
+  30%  { transform: rotate(-15deg); }
+  45%  { transform: rotate(10deg); }
+  60%  { transform: rotate(-10deg); }
+  75%  { transform: rotate(5deg); }
+  100% { transform: rotate(0deg); }
+}
+.tt2-bell--ringing svg { animation: bell-ring 0.6s ease; }
 
 .tt2-stop-time { font-size: 1.1rem; font-weight: 500; color: rgba(255 255 255 / 0.6); font-variant-numeric: tabular-nums; }
 

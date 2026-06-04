@@ -1,12 +1,97 @@
 import { useCountdown } from '../hooks/useCountdown.js'
 import { delayLabel, delayClass, to12hr } from '../utils/time.js'
+import { useState, useEffect, useRef } from 'react'
+
+let audioCtx = null
+const audioBuffers = {}
+
+async function loadSound(file = 'notify.wav') {
+  if (audioBuffers[file]) return audioBuffers[file]
+  audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)()
+  const res = await fetch(`/${file}`)
+  const arr = await res.arrayBuffer()
+  audioBuffers[file] = await audioCtx.decodeAudioData(arr)
+  return audioBuffers[file]
+}
+
+function playSound(file = 'notify.wav') {
+  if (!audioCtx || !audioBuffers[file]) return
+  const src = audioCtx.createBufferSource()
+  src.buffer = audioBuffers[file]
+  const gain = audioCtx.createGain()
+  gain.gain.value = 3.0
+  src.connect(gain)
+  gain.connect(audioCtx.destination)
+  src.start(0)
+}
+
+function BellButton({ departureISO, active, onToggle, cancelled }) {
+  const [ringing, setRinging] = useState(false)
+  const notifiedRef = useRef(false)
+  const cancelNotifiedRef = useRef(false)
+  const { countdown } = useCountdown(departureISO)
+  const minutes = countdown ? parseInt(countdown.split(':')[0], 10) : null
+
+  useEffect(() => {
+    if (!active) { notifiedRef.current = false; cancelNotifiedRef.current = false; return }
+    // Cancelled — play immediately
+    if (cancelled && !cancelNotifiedRef.current) {
+      cancelNotifiedRef.current = true
+      setRinging(true)
+      playSound('cancelled.wav')
+      setTimeout(() => setRinging(false), 1000)
+      return
+    }
+    // 3 minutes remaining
+    if (minutes !== null && minutes <= 3 && minutes >= 0 && !notifiedRef.current) {
+      notifiedRef.current = true
+      setRinging(true)
+      playSound('notify.wav')
+      setTimeout(() => setRinging(false), 1000)
+    }
+  }, [active, minutes, cancelled])
+
+  const handleClick = () => {
+    loadSound('notify.wav').catch(() => {})
+    loadSound('cancelled.wav').catch(() => {})
+    onToggle()
+  }
+
+  return (
+    <button
+      className={`tt2-bell${active ? ' tt2-bell--active' : ''}${ringing ? ' tt2-bell--ringing' : ''}`}
+      onClick={handleClick}
+      title={active ? 'Notification on' : 'Notify me'}
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+    </button>
+  )
+}
 
 const MAX_MINUTES = 30
 
-function NextTramCard({ departure }) {
+function NextTramCard({ departure, notifyActive, onToggleNotify }) {
   const { countdown } = useCountdown(departure.departureISO)
   const minutes = countdown ? parseInt(countdown.split(':')[0], 10) : 0
   const seconds = countdown ? parseInt(countdown.split(':')[1], 10) : 0
+  const notifiedRef = useRef(false)
+  const cancelNotifiedRef = useRef(false)
+
+  useEffect(() => {
+    if (!notifyActive) { notifiedRef.current = false; cancelNotifiedRef.current = false; return }
+    if (departure?.cancelled && !cancelNotifiedRef.current) {
+      cancelNotifiedRef.current = true
+      playSound('cancelled.wav')
+      return
+    }
+    if (minutes <= 3 && minutes >= 0 && countdown && !notifiedRef.current) {
+      notifiedRef.current = true
+      playSound('notify.wav')
+    }
+  }, [notifyActive, minutes, departure?.cancelled, countdown])
   const totalSeconds = minutes * 60 + seconds
   const progress = (1 - Math.min(totalSeconds / (MAX_MINUTES * 60), 1)) * 100
   const statusClass = delayClass(departure.delay, departure.cancelled)
@@ -19,6 +104,13 @@ function NextTramCard({ departure }) {
         <div className="ntc2-label">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 16c0 1.1.9 2 2 2h1v2a1 1 0 0 0 2 0v-2h6v2a1 1 0 0 0 2 0v-2h1c1.1 0 2-.9 2-2V6c0-3-3-4-8-4S4 3 4 6v10zm7-11h2v1h-2V5zm-5 3h12v6H6V8zm2 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm8 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
           NEXT TRAM
+          <button className={`ntc2-notify-btn${notifyActive ? ' ntc2-notify-btn--on' : ''}`} onClick={() => { loadSound('notify.wav').catch(() => {}); loadSound('cancelled.wav').catch(() => {}); onToggleNotify() }} title={notifyActive ? 'Notification on (press 0)' : 'Notify me (press 0)'}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill={notifyActive ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            {notifyActive ? 'ON' : 'OFF'}
+          </button>
         </div>
         <div className="ntc2-identity">
           <img src="/Logo_Saarbahn.png" alt="Saarbahn" className="ntc2-logo" />
@@ -84,13 +176,17 @@ function NextTramCard({ departure }) {
   )
 }
 
-function TimetableRow({ departure }) {
+function TimetableRow({ departure, index, active, onToggle }) {
   const { countdown, relative } = useCountdown(departure.departureISO)
   const mins = countdown ? parseInt(countdown.split(':')[0], 10) : null
   const statusClass = delayClass(departure.delay, departure.cancelled)
 
   return (
-    <tr className={`tt2-row ${departure.cancelled ? 'tt2-row--cancelled' : ''}`}>
+    <tr className={`tt2-row ${departure.cancelled ? 'tt2-row--cancelled' : ''}${active ? ' tt2-row--alerted' : ''}`}>
+      <td className="tt2-serial">{index + 1}</td>
+      <td className="tt2-bell-cell">
+        <BellButton departureISO={departure.departureISO} active={active} onToggle={onToggle} cancelled={departure.cancelled} />
+      </td>
       <td className="tt2-line">
         <img src="/Logo_Saarbahn.png" alt="Saarbahn" className="tt2-logo" />
       </td>
@@ -126,6 +222,21 @@ function TimetableRow({ departure }) {
 }
 
 export default function DeparturesList({ departures }) {
+  const [activeAlerts, setActiveAlerts] = useState({})
+  const [nextAlert, setNextAlert] = useState(false)
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      const num = parseInt(e.key, 10)
+      if (!isNaN(num)) {
+        if (num === 0) setNextAlert(v => !v)
+        else if (num >= 1 && num <= 9) setActiveAlerts(prev => ({ ...prev, [num - 1]: !prev[num - 1] }))
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [])
+
   if (!departures?.length) return <div className="empty-state"><p>No departures found.</p></div>
 
   const now = new Date()
@@ -135,9 +246,11 @@ export default function DeparturesList({ departures }) {
   const next = nextIdx >= 0 ? future[nextIdx] : future[0]
   const rest = future.filter((_, i) => i !== (nextIdx >= 0 ? nextIdx : 0))
 
+  if (!next) return <div className="empty-state"><p>No upcoming departures.</p></div>
+
   return (
     <>
-      <NextTramCard departure={next} />
+      <NextTramCard departure={next} notifyActive={nextAlert} onToggleNotify={() => setNextAlert(v => !v)} />
       {rest.length > 0 && (
         <div className="tt2-wrap">
           <div className="tt2-header">
@@ -147,6 +260,8 @@ export default function DeparturesList({ departures }) {
           <table className="tt2-table">
             <thead>
               <tr>
+                <th>#</th>
+                <th></th>
                 <th>LINE</th>
                 <th>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline',marginRight:5,verticalAlign:'middle'}}><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -163,7 +278,13 @@ export default function DeparturesList({ departures }) {
             </thead>
             <tbody>
               {rest.map((dep, i) => (
-                <TimetableRow key={dep.tripId ?? i} departure={dep} />
+                <TimetableRow
+                  key={dep.tripId ?? i}
+                  departure={dep}
+                  index={i}
+                  active={!!activeAlerts[i]}
+                  onToggle={() => setActiveAlerts(prev => ({ ...prev, [i]: !prev[i] }))}
+                />
               ))}
             </tbody>
           </table>

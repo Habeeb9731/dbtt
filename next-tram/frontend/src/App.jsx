@@ -1,4 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Component } from 'react'
+
+class ErrorBoundary extends Component {
+  state = { error: null }
+  static getDerivedStateFromError(e) { return { error: e } }
+  render() {
+    if (this.state.error) return (
+      <div style={{color:'red',padding:'20px',background:'#1a0000',borderRadius:'12px',margin:'16px'}}>
+        <strong>Crash:</strong> {this.state.error.message}
+        <pre style={{fontSize:'0.7rem',marginTop:'8px',opacity:0.7}}>{this.state.error.stack?.slice(0,300)}</pre>
+      </div>
+    )
+    return this.props.children
+  }
+}
 import { useSettings } from './hooks/useSettings.js'
 import { useDepartures } from './hooks/useDepartures.js'
 import { useWeather } from './hooks/useWeather.js'
@@ -68,9 +82,18 @@ export default function App() {
             </div>
           )}
 
-          {loading && !data && <LoadingState />}
-          {error && !data && <ErrorState message={error} onRetry={refresh} isOffline={!isOnline} />}
-          {data && <DeparturesList departures={departures} />}
+          {loading && !data && (
+            <div style={{color:'#fff',padding:'24px',background:'#12152a',borderRadius:'16px',fontSize:'1.1rem'}}>
+              ⏳ Loading departures...
+            </div>
+          )}
+          {error && !data && (
+            <div style={{color:'#f87171',padding:'24px',background:'#1a0a0a',borderRadius:'16px'}}>
+              <strong>Error:</strong> {error}
+              <br/><button onClick={refresh} style={{marginTop:'12px',padding:'8px 16px',background:'#3b82f6',color:'#fff',border:'none',borderRadius:'8px',cursor:'pointer'}}>Retry</button>
+            </div>
+          )}
+          {data && <ErrorBoundary><DeparturesList departures={departures} /></ErrorBoundary>}
         </main>
       </div>
 
