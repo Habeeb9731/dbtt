@@ -256,12 +256,14 @@ export default function DeparturesList({ departures }) {
     return () => window.removeEventListener('keydown', handleKey)
   }, [])
 
-  // Transfer alert when tram advances to main card
+  // Transfer alert when tram advances to main card; reset if new tram had no row alert
   useEffect(() => {
     if (!next?.tripId) return
     if (activeAlerts[next.tripId]) {
       setNextAlert(true)
       setActiveAlerts(prev => { const n = {...prev}; delete n[next.tripId]; return n })
+    } else {
+      setNextAlert(false)
     }
   }, [next?.tripId])
 
